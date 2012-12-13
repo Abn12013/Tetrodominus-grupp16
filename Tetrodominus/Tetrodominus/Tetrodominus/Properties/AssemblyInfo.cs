@@ -8,8 +8,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Tetrodominus")]
 [assembly: AssemblyProduct("Tetrodominus")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("MDH")]
-[assembly: AssemblyCopyright("Copyright © MDH 2012")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 // On Windows, the following GUID is for the ID of the typelib if this
 // project is exposed to COM. On other platforms, it unique identifies the
 // title storage container when deploying this assembly to the device.
-[assembly: Guid("4d760b15-3e82-4362-88cf-7ce3295b699c")]
+[assembly: Guid("6a7340c8-2807-4b64-b914-3386ad9338c8")]
 
 // Version information for an assembly consists of the following four values:
 //

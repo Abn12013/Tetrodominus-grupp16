@@ -18,31 +18,27 @@ namespace Tetrodominus
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
-        MouseState mouseState = new MouseState();
-        MouseState previousMouseState = new MouseState();
         KeyboardState keyboardState = new KeyboardState();
-        KeyboardState previousKeyboardState = new KeyboardState();
-        Vector2 mousePosition = new Vector2();
-        Vector2 prevMouseCoordinate = new Vector2();
-        Vector2 mouseCoordinate = new Vector2();
+        KeyboardState prevKeyboardState = new KeyboardState();
+        MouseState mouseState = new MouseState();
+        MouseState prevMouseState = new MouseState();
+        GameMethod gameMethod = new GameMethod();
 
-        Grid grid = new Grid();
-        Unit unitMethod = new Unit();
-        Unit[,] units = new Unit[40, 18];
-        List<Unit> Orbs = new List<Unit>();
-        List<Unit> Cubes = new List<Unit>();
+        List<Unit> orbUnit = new List<Unit>();
+        List<Unit> cubeUnit = new List<Unit>();
 
-        Texture2D background;
-        SpriteFont lucidaConsole;
-
+        Vector2 spriteSize = new Vector2(25, 25);
+        Vector2 gridSize = new Vector2(40, 18);
+        Vector2 resolution;
+        Vector2 gameGridDisplacing;
+        GameGrid gameGrid;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferWidth = 1000;
-            graphics.PreferredBackBufferHeight = 750;
+            graphics.PreferredBackBufferWidth = 880;
+            graphics.PreferredBackBufferHeight = 660;
             IsMouseVisible = true;
         }
 
@@ -54,7 +50,10 @@ namespace Tetrodominus
         /// </summary>
         protected override void Initialize()
         {
-            unitMethod.initialize(units, grid.mapSize, grid.tileSize, Content, graphics);
+            resolution = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+            gameGrid = new GameGrid(gridSize);
+            gameGridDisplacing = new Vector2((resolution.X - spriteSize.X * gridSize.X) / 2, (resolution.Y - spriteSize.Y * gridSize.Y) / 2);
+            gameGrid.Initialize(gridSize);
             // TODO: Add your initialization logic here
 
             base.Initialize();
@@ -69,11 +68,7 @@ namespace Tetrodominus
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            grid.loadContent(Content);
-
-            background = Content.Load<Texture2D>("Temp_Bkg");
-
-            lucidaConsole = Content.Load<SpriteFont>("LucidaConsole");
+            gameMethod.Load(Content);
 
             // TODO: use this.Content to load your game content here
         }
@@ -94,50 +89,25 @@ namespace Tetrodominus
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            mouseState = Mouse.GetState();
-            keyboardState = Keyboard.GetState();
-
-            grid.tick(gameTime);
-
             // Allows the game to exit
+            keyboardState = Keyboard.GetState();
+            mouseState = Mouse.GetState();
 
             if (keyboardState.IsKeyDown(Keys.Escape))
-            {
                 this.Exit();
+            if (keyboardState.IsKeyDown(Keys.Q) && prevKeyboardState.IsKeyUp(Keys.Q))
+            {
+                gameMethod.CreateUnits(orbUnit, cubeUnit, gameGrid);
             }
 
-            if (keyboardState.IsKeyDown(Keys.C) && previousKeyboardState.IsKeyUp(Keys.C))
-            {
-                unitMethod.createUnitsCircle(units, Content, ref Orbs);
-            }
-
-            if (keyboardState.IsKeyDown(Keys.Q) && previousKeyboardState.IsKeyUp(Keys.Q))
-            {
-                unitMethod.createUnitsSquare(units, Content);
-            }
-
-            if (mouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed && previousMouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released)
-            {
-            }
-
-            for (int y = 4; y < grid.mapSize.Y - 4; y++)
-            {
-                for (int x = 4; x < grid.mapSize.X - 4; x++)
-                {
-                    if (mousePosition.X > units[x, y].box.Right && mousePosition.X < units[x, y].box.Left && mousePosition.Y > units[x, y].box.Bottom && mousePosition.Y < units[x, y].box.Top)
-                        mouseCoordinate = units[x, y].position;
-                }
-            }
+            gameMethod.Tick();
 
             // TODO: Add your update logic here
-
-            previousMouseState = mouseState;
-            previousKeyboardState = keyboardState;
-
+            prevKeyboardState = keyboardState;
+            prevMouseState = mouseState;
             base.Update(gameTime);
         }
 
-        
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -147,16 +117,9 @@ namespace Tetrodominus
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
 
-            spriteBatch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
-
-            grid.draw(graphics, spriteBatch);
-
-            unitMethod.Draw(units, graphics, spriteBatch, grid.mapSize, grid.tileSize);
-
-            spriteBatch.DrawString(lucidaConsole, mouseCoordinate.X + ":" + mouseCoordinate.Y, new Vector2(0, 0), Color.White);
+            gameMethod.Draw(spriteBatch, gameGrid, orbUnit, cubeUnit, spriteSize, gameGridDisplacing, gridSize);
 
             // TODO: Add your drawing code here
-
             spriteBatch.End();
             base.Draw(gameTime);
         }

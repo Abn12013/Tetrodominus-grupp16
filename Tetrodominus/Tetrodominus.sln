@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetrodominus", "Tetrodominus\Tetrodominus\Tetrodominus.csproj", "{367D4814-D4B0-408C-85FD-58E439C49E37}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tetrodominus", "Tetrodominus\Tetrodominus\Tetrodominus.csproj", "{87A4DCEB-FC1B-4591-8D6B-7D10413602C6}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "TetrodominusContent", "Tetrodominus\TetrodominusContent\TetrodominusContent.contentproj", "{8AD23F57-D975-4B95-9B61-A2D8DFB58952}"
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "TetrodominusContent", "Tetrodominus\TetrodominusContent\TetrodominusContent.contentproj", "{D8A24C58-CE64-41A1-A881-1748FDC481C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +11,12 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{367D4814-D4B0-408C-85FD-58E439C49E37}.Debug|x86.ActiveCfg = Debug|x86
-		{367D4814-D4B0-408C-85FD-58E439C49E37}.Debug|x86.Build.0 = Debug|x86
-		{367D4814-D4B0-408C-85FD-58E439C49E37}.Release|x86.ActiveCfg = Release|x86
-		{367D4814-D4B0-408C-85FD-58E439C49E37}.Release|x86.Build.0 = Release|x86
-		{8AD23F57-D975-4B95-9B61-A2D8DFB58952}.Debug|x86.ActiveCfg = Debug|x86
-		{8AD23F57-D975-4B95-9B61-A2D8DFB58952}.Release|x86.ActiveCfg = Release|x86
+		{87A4DCEB-FC1B-4591-8D6B-7D10413602C6}.Debug|x86.ActiveCfg = Debug|x86
+		{87A4DCEB-FC1B-4591-8D6B-7D10413602C6}.Debug|x86.Build.0 = Debug|x86
+		{87A4DCEB-FC1B-4591-8D6B-7D10413602C6}.Release|x86.ActiveCfg = Release|x86
+		{87A4DCEB-FC1B-4591-8D6B-7D10413602C6}.Release|x86.Build.0 = Release|x86
+		{D8A24C58-CE64-41A1-A881-1748FDC481C1}.Debug|x86.ActiveCfg = Debug|x86
+		{D8A24C58-CE64-41A1-A881-1748FDC481C1}.Release|x86.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
