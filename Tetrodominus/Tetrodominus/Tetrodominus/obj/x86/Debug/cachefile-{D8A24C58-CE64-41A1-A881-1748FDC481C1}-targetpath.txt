@@ -1,3 +1,4 @@
 Content\GameGridUnit.xnb
 Content\Orb.xnb
 Content\Cube.xnb
+Content\segoe.xnb

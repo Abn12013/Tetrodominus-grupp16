@@ -26,12 +26,15 @@ namespace Tetrodominus
 
         List<Unit> orbUnit = new List<Unit>();
         List<Unit> cubeUnit = new List<Unit>();
+        List<Rectangle> clickBox = new List<Rectangle>();
 
         Vector2 spriteSize = new Vector2(25, 25);
         Vector2 gridSize = new Vector2(40, 18);
         Vector2 resolution;
         Vector2 gameGridDisplacing;
+        Vector2 mouseCoordinate;
         GameGrid gameGrid;
+        SpriteFont segoe;
 
         public Game1()
         {
@@ -54,6 +57,13 @@ namespace Tetrodominus
             gameGrid = new GameGrid(gridSize);
             gameGridDisplacing = new Vector2((resolution.X - spriteSize.X * gridSize.X) / 2, (resolution.Y - spriteSize.Y * gridSize.Y) / 2);
             gameGrid.Initialize(gridSize);
+            for (int y = 4; y < 14; y++)
+            {
+                for (int x = 4; x < 36; x++)
+                {
+                    clickBox.Add(new Rectangle(x * (int)spriteSize.X + (int)gameGridDisplacing.X, y * (int)spriteSize.Y + (int)gameGridDisplacing.Y, (int)spriteSize.X, (int)spriteSize.Y));
+                }
+            }
             // TODO: Add your initialization logic here
 
             base.Initialize();
@@ -69,7 +79,7 @@ namespace Tetrodominus
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             gameMethod.Load(Content);
-
+            segoe = Content.Load<SpriteFont>("segoe");
             // TODO: use this.Content to load your game content here
         }
 
@@ -97,9 +107,43 @@ namespace Tetrodominus
                 this.Exit();
             if (keyboardState.IsKeyDown(Keys.Q) && prevKeyboardState.IsKeyUp(Keys.Q))
             {
-                gameMethod.CreateUnits(orbUnit, cubeUnit, gameGrid);
+                gameMethod.CreateUnits(orbUnit, cubeUnit, ref gameGrid);
             }
 
+            for (int i = 0; i < 320; i++)
+            {
+                if (mouseState.X < clickBox.ElementAt(i).Right && mouseState.X > clickBox.ElementAt(i).Left &&
+                    mouseState.Y < clickBox.ElementAt(i).Bottom && mouseState.Y > clickBox.ElementAt(i).Top)
+                {
+                    mouseCoordinate = new Vector2((i % 32)+4, (i / 32)+4);
+                }
+                    
+            }
+
+            if (mouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Pressed) &&
+                prevMouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Released))
+            {
+                foreach (Unit orb in orbUnit)
+                {
+                    if (orb.position == mouseCoordinate)
+                    {
+                        orb.follow = true;
+                    }
+                }
+            }
+
+            if (mouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released &&
+                prevMouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Pressed))
+            {
+                foreach (Unit orb in orbUnit)
+                    orb.follow = false;
+            }
+
+            foreach (Unit orb in orbUnit)
+            {
+                if (orb.follow == true)
+                    orb.Behavior(mouseCoordinate, ref gameGrid.isOccupied);
+            }
             gameMethod.Tick();
 
             // TODO: Add your update logic here
@@ -114,9 +158,10 @@ namespace Tetrodominus
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
 
+            spriteBatch.DrawString(segoe, mouseCoordinate.X + ":" + mouseCoordinate.Y, new Vector2(0, 0), Color.White);
             gameMethod.Draw(spriteBatch, gameGrid, orbUnit, cubeUnit, spriteSize, gameGridDisplacing, gridSize);
 
             // TODO: Add your drawing code here

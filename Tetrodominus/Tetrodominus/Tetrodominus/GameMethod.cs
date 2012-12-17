@@ -73,39 +73,47 @@ namespace Tetrodominus
             }
         }
 
-        public void CreateUnits(List<Unit> orbs, List<Unit> cubes, GameGrid gameGrid)
+        public void CreateUnits(List<Unit> orbs, List<Unit> cubes, ref GameGrid gameGrid)
         {
             if (!gameGrid.isOccupied[5, 5])
             {
                 orbs.Add(new Unit(new Vector2(5, 5)));
+                gameGrid.isOccupied[5, 5] = true;
             }
             if (!gameGrid.isOccupied[5, 7])
             {
                 orbs.Add(new Unit(new Vector2(5, 7)));
+                gameGrid.isOccupied[5, 7] = true;
             }
             if (!gameGrid.isOccupied[5, 10])
             {
                 orbs.Add(new Unit(new Vector2(5, 10)));
+                gameGrid.isOccupied[5, 10] = true;
             }
             if (!gameGrid.isOccupied[5, 12])
             {
                 orbs.Add(new Unit(new Vector2(5, 12)));
+                gameGrid.isOccupied[5, 12] = true;
             }
             if (!gameGrid.isOccupied[34, 5])
             {
                 cubes.Add(new Unit(new Vector2(34, 5)));
+                gameGrid.isOccupied[34, 5] = true;
             }
             if (!gameGrid.isOccupied[34, 7])
             {
                 cubes.Add(new Unit(new Vector2(34, 7)));
+                gameGrid.isOccupied[34, 7] = true;
             }
             if (!gameGrid.isOccupied[34, 10])
             {
                 cubes.Add(new Unit(new Vector2(34, 10)));
+                gameGrid.isOccupied[34, 10] = true;
             }
             if (!gameGrid.isOccupied[34, 12])
             {
                 cubes.Add(new Unit(new Vector2(34, 12)));
+                gameGrid.isOccupied[34, 12] = true;
             }
         }
     }
