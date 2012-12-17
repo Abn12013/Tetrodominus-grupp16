@@ -160,8 +160,11 @@ namespace Tetrodominus
                                     if(orbUnit.ElementAt(i).position.X == column)
                                     {
                                         tempY = (int)orbUnit.ElementAt(i).position.Y;
-                                        tempX = (int)orbUnit.ElementAt(i).position.Y;
-                                        gameGrid.isOccupied[tempY, tempX] = false;
+                                        tempX = (int)orbUnit.ElementAt(i).position.X;
+                                        if (gameGrid.isOccupied[tempX, tempY] == true)
+                                        {
+                                            gameGrid.isOccupied[tempX, tempY] = false;
+                                        }
                                         orbUnit.RemoveAt(i);
                                         i--;
                                     }
