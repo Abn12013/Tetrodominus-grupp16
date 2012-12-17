@@ -36,3 +36,13 @@ C:\Users\Albin\Documents\GitHub\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\T
 C:\Users\Albin\Documents\GitHub\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 C:\Users\Albin\Documents\GitHub\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\Tetrodominus.exe
 C:\Users\Albin\Documents\GitHub\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\Tetrodominus.pdb
+F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\bin\x86\Debug\Content\GameGridUnit.xnb
+F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\bin\x86\Debug\Content\Orb.xnb
+F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\bin\x86\Debug\Content\Cube.xnb
+F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\bin\x86\Debug\Content\segoe.xnb
+F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\bin\x86\Debug\Tetrodominus.exe
+F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\bin\x86\Debug\Tetrodominus.pdb
+F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\ResolveAssemblyReference.cache
+F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\Tetrodominus.exe
+F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\Tetrodominus.pdb

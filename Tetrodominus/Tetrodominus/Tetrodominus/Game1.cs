@@ -139,29 +139,31 @@ namespace Tetrodominus
                     orb.follow = false;
                 int count = 0;
                 int column = 0;
-                for (int y = 4; y <= 36; y++)
+                for (int x = 4; x <= 36; x++)
                 {
                     count = 0;
-                    for (int x = 4; x <= 14; x++)
+                    for (int y = 4; y <= 14; y++)
                     {
-                        if (gameGrid.isOccupied[y, x] == true)
+                        if (gameGrid.isOccupied[x, y] == true)
                         {
                             count++;
                             if (count == 10)
                             {
-                                column = y;
+                                column = x;
                                 int counter = 0;
+                                int unitCount = orbUnit.Count;
                                 int tempY = 0;
                                 int tempX = 0;
-                                for (int i = 0; counter < orbUnit.Count;i++)
+                                for (int i = 0; counter < unitCount;i++)
                                 {
                                     counter++;
                                     if(orbUnit.ElementAt(i).position.X == column)
                                     {
                                         tempY = (int)orbUnit.ElementAt(i).position.Y;
                                         tempX = (int)orbUnit.ElementAt(i).position.Y;
-                                        orbUnit.RemoveAt(i);
                                         gameGrid.isOccupied[tempY, tempX] = false;
+                                        orbUnit.RemoveAt(i);
+                                        i--;
                                     }
                                 }
                             }
