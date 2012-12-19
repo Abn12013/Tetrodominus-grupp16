@@ -72,6 +72,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CombinedUnit.cs" />
     <Compile Include="GameMethod.cs" />
     <Compile Include="GameGrid.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

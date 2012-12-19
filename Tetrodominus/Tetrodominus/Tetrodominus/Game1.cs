@@ -28,6 +28,8 @@ namespace Tetrodominus
 
         List<Unit> orbUnit = new List<Unit>();
         List<Unit> cubeUnit = new List<Unit>();
+        List<CombinedUnit> orbCombo = new List<CombinedUnit>();
+        List<CombinedUnit> cubeCombo = new List<CombinedUnit>();
         List<Rectangle> clickBox = new List<Rectangle>();
 
         Vector2 spriteSize = new Vector2(25, 25);
@@ -126,6 +128,11 @@ namespace Tetrodominus
                         orb.step = 4;
                         orb.free = true;
                     }
+                    foreach (CombinedUnit o in orbCombo)
+                    {
+                        o.step = 6;
+                        o.free = true;
+                    }
                     currentGameState = GameState.orbTurn;
                     break;
                 case GameState.cubeTransition:
@@ -135,6 +142,11 @@ namespace Tetrodominus
                         cube.step = 4;
                         cube.free = true;
                     }
+                    foreach (CombinedUnit c in cubeCombo)
+                    {
+                        c.step = 6;
+                        c.free = true;
+                    }
                     currentGameState = GameState.cubeTurn;
                     break;
                 case GameState.orbWin:
@@ -142,6 +154,8 @@ namespace Tetrodominus
                     {
                         orbUnit.Clear();
                         cubeUnit.Clear();
+                        orbCombo.Clear();
+                        cubeCombo.Clear();
                         for (int x = 4; x <= 36; x++)
                         {
                             for (int y = 4; y <= 14; y++)
@@ -158,6 +172,8 @@ namespace Tetrodominus
                     {
                         orbUnit.Clear();
                         cubeUnit.Clear();
+                        orbCombo.Clear();
+                        cubeCombo.Clear();
                         for (int x = 4; x <= 36; x++)
                         {
                             for (int y = 4; y <= 14; y++)
@@ -175,29 +191,49 @@ namespace Tetrodominus
 
                     if (mouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Pressed) &&
                         prevMouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Released))
+                    {
                         foreach (Unit orb in orbUnit)
                             if (orb.position == mouseCoordinate)
                                 if (orb.free)
                                     orb.follow = true;
+                        foreach (CombinedUnit combo in orbCombo)
+                            if (combo.position1 == mouseCoordinate || combo.position2 == mouseCoordinate
+                                || combo.position3 == mouseCoordinate || combo.position4 == mouseCoordinate)
+                                if (combo.free)
+                                    combo.follow = true;
+                    }
                     
                     foreach (Unit orb in orbUnit)
                         if (orb.follow == true)
                             orb.Behavior(mouseCoordinate, ref gameGrid.isOccupied);
+                    foreach (CombinedUnit combo in orbCombo)
+                        if (combo.follow == true)
+                            combo.Behavior(mouseCoordinate, ref gameGrid.isOccupied);
                     break;
                 case GameState.cubeTurn:
                     if (keyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
                         currentGameState = GameState.orbTransition;
                     if (mouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Pressed) &&
                         prevMouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Released))
+                    {
                         foreach (Unit cube in cubeUnit)
                             if (cube.position == mouseCoordinate)
                                 if (cube.free)
                                     cube.follow = true;
-                            
+                        foreach (CombinedUnit combo in cubeCombo)
+                            if (combo.position1 == mouseCoordinate || combo.position2 == mouseCoordinate
+                                || combo.position3 == mouseCoordinate || combo.position4 == mouseCoordinate)
+                                if (combo.free)
+                                    combo.follow = true;
+                    }
                     foreach (Unit cube in cubeUnit)
                         if (cube.follow == true)
                             cube.Behavior(mouseCoordinate, ref gameGrid.isOccupied);
-
+                    
+                    foreach (CombinedUnit combo in cubeCombo)
+                        if (combo.follow == true)
+                            combo.Behavior(mouseCoordinate, ref gameGrid.isOccupied);
+                    
                     break;
             }
             if (mouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released &&
@@ -215,11 +251,24 @@ namespace Tetrodominus
                         cube.free = false;
                     cube.follow = false;
                 }
-                gameMethod.RemoveLine(ref gameGrid, ref orbUnit, ref cubeUnit);
+                foreach (CombinedUnit combo in orbCombo)
+                {
+                    if (combo.follow)
+                        combo.free = false;
+                    combo.follow = false;
+                }
+                foreach (CombinedUnit combo in cubeCombo)
+                {
+                    if (combo.follow)
+                        combo.free = false;
+                    combo.follow = false;
+                }
+                gameMethod.RemoveLine(ref gameGrid, ref orbUnit, ref cubeUnit, ref orbCombo, ref cubeCombo);
                 if (gameMethod.orbWin)
                     currentGameState = GameState.orbWin;
                 if (gameMethod.cubeWin)
                     currentGameState = GameState.cubeWin;
+                gameMethod.Combine(ref gameGrid, ref orbUnit, ref cubeUnit, ref orbCombo, ref cubeCombo);
             }
 
             gameMethod.Tick();
@@ -249,8 +298,9 @@ namespace Tetrodominus
                     break;
             }
 
-            spriteBatch.DrawString(segoe, mouseCoordinate.X + ":" + mouseCoordinate.Y, new Vector2(0, 0), Color.White);
-            gameMethod.Draw(spriteBatch, gameGrid, orbUnit, cubeUnit, spriteSize, gameGridDisplacing, gridSize);
+            //Kommentera tillbaka när du behöver kolla att musmarkören är på rätt koordinater
+            //spriteBatch.DrawString(segoe, mouseCoordinate.X + ":" + mouseCoordinate.Y, new Vector2(0, 0), Color.White);
+            gameMethod.Draw(spriteBatch, gameGrid, orbUnit, cubeUnit, spriteSize, gameGridDisplacing, gridSize, orbCombo, cubeCombo);
 
             // TODO: Add your drawing code here
             spriteBatch.End();
