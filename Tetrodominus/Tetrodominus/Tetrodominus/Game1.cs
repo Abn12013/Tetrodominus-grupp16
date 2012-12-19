@@ -16,6 +16,8 @@ namespace Tetrodominus
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        enum GameState {orbTransition, orbTurn, cubeTransition, cubeTurn, orbWin, cubeWin};
+        GameState currentGameState = GameState.orbTransition;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         KeyboardState keyboardState = new KeyboardState();
@@ -105,11 +107,6 @@ namespace Tetrodominus
 
             if (keyboardState.IsKeyDown(Keys.Escape))
                 this.Exit();
-            if (keyboardState.IsKeyDown(Keys.Q) && prevKeyboardState.IsKeyUp(Keys.Q))
-            {
-                gameMethod.CreateUnits(orbUnit, cubeUnit, ref gameGrid);
-            }
-
             for (int i = 0; i < 320; i++)
             {
                 if (mouseState.X < clickBox.ElementAt(i).Right && mouseState.X > clickBox.ElementAt(i).Left &&
@@ -120,66 +117,111 @@ namespace Tetrodominus
                     
             }
 
-            if (mouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Pressed) &&
-                prevMouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Released))
+            switch (currentGameState)
             {
-                foreach (Unit orb in orbUnit)
-                {
-                    if (orb.position == mouseCoordinate)
+                case GameState.orbTransition:
+                    gameMethod.CreateOrbs(orbUnit, ref gameGrid);
+                    foreach (Unit orb in orbUnit)
                     {
-                        orb.follow = true;
+                        orb.step = 4;
+                        orb.free = true;
                     }
-                }
-            }
-
-            if (mouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released &&
-                prevMouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Pressed))
-            {
-                foreach (Unit orb in orbUnit)
-                    orb.follow = false;
-                int count = 0;
-                int column = 0;
-                for (int x = 4; x <= 36; x++)
-                {
-                    count = 0;
-                    for (int y = 4; y <= 14; y++)
+                    currentGameState = GameState.orbTurn;
+                    break;
+                case GameState.cubeTransition:
+                    gameMethod.CreateCubes(cubeUnit, ref gameGrid);
+                    foreach (Unit cube in cubeUnit)
                     {
-                        if (gameGrid.isOccupied[x, y] == true)
+                        cube.step = 4;
+                        cube.free = true;
+                    }
+                    currentGameState = GameState.cubeTurn;
+                    break;
+                case GameState.orbWin:
+                    if (keyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
+                    {
+                        orbUnit.Clear();
+                        cubeUnit.Clear();
+                        for (int x = 4; x <= 36; x++)
                         {
-                            count++;
-                            if (count == 10)
+                            for (int y = 4; y <= 14; y++)
                             {
-                                column = x;
-                                int counter = 0;
-                                int unitCount = orbUnit.Count;
-                                int tempY = 0;
-                                int tempX = 0;
-                                for (int i = 0; counter < unitCount;i++)
-                                {
-                                    counter++;
-                                    if(orbUnit.ElementAt(i).position.X == column)
-                                    {
-                                        tempY = (int)orbUnit.ElementAt(i).position.Y;
-                                        tempX = (int)orbUnit.ElementAt(i).position.X;
-                                        if (gameGrid.isOccupied[tempX, tempY] == true)
-                                        {
-                                            gameGrid.isOccupied[tempX, tempY] = false;
-                                        }
-                                        orbUnit.RemoveAt(i);
-                                        i--;
-                                    }
-                                }
+                                gameGrid.isOccupied[x, y] = false;
                             }
                         }
+                        gameMethod.orbWin = false;
+                        currentGameState = GameState.orbTransition;
                     }
+                    break;
+                case GameState.cubeWin:
+                    if (keyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
+                    {
+                        orbUnit.Clear();
+                        cubeUnit.Clear();
+                        for (int x = 4; x <= 36; x++)
+                        {
+                            for (int y = 4; y <= 14; y++)
+                            {
+                                gameGrid.isOccupied[x, y] = false;
+                            }
+                        }
+                        gameMethod.cubeWin = false;
+                        currentGameState = GameState.orbTransition;
+                    }
+                    break;
+                case GameState.orbTurn:
+                    if (keyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
+                        currentGameState = GameState.cubeTransition;
+
+                    if (mouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Pressed) &&
+                        prevMouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Released))
+                        foreach (Unit orb in orbUnit)
+                            if (orb.position == mouseCoordinate)
+                                if (orb.free)
+                                    orb.follow = true;
+                    
+                    foreach (Unit orb in orbUnit)
+                        if (orb.follow == true)
+                            orb.Behavior(mouseCoordinate, ref gameGrid.isOccupied);
+                    break;
+                case GameState.cubeTurn:
+                    if (keyboardState.IsKeyDown(Keys.Enter) && prevKeyboardState.IsKeyUp(Keys.Enter))
+                        currentGameState = GameState.orbTransition;
+                    if (mouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Pressed) &&
+                        prevMouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Released))
+                        foreach (Unit cube in cubeUnit)
+                            if (cube.position == mouseCoordinate)
+                                if (cube.free)
+                                    cube.follow = true;
+                            
+                    foreach (Unit cube in cubeUnit)
+                        if (cube.follow == true)
+                            cube.Behavior(mouseCoordinate, ref gameGrid.isOccupied);
+
+                    break;
+            }
+            if (mouseState.LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Released &&
+                        prevMouseState.LeftButton == (Microsoft.Xna.Framework.Input.ButtonState.Pressed))
+            {
+                foreach (Unit orb in orbUnit)
+                {
+                    if (orb.follow == true)
+                        orb.free = false;
+                    orb.follow = false;
                 }
+                foreach (Unit cube in cubeUnit)
+                {
+                    if (cube.follow == true)
+                        cube.free = false;
+                    cube.follow = false;
+                }
+                gameMethod.RemoveLine(ref gameGrid, ref orbUnit, ref cubeUnit);
+                if (gameMethod.orbWin)
+                    currentGameState = GameState.orbWin;
+                if (gameMethod.cubeWin)
+                    currentGameState = GameState.cubeWin;
             }
 
-            foreach (Unit orb in orbUnit)
-            {
-                if (orb.follow == true)
-                    orb.Behavior(mouseCoordinate, ref gameGrid.isOccupied);
-            }
             gameMethod.Tick();
 
             // TODO: Add your update logic here
@@ -196,6 +238,16 @@ namespace Tetrodominus
         {
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
+
+            switch (currentGameState)
+            {
+                case GameState.cubeWin:
+                    spriteBatch.DrawString(segoe, "BLUE WINS", new Vector2(200, 10), Color.White);
+                    break;
+                case GameState.orbWin:
+                    spriteBatch.DrawString(segoe, "RED WINS", new Vector2(200, 10), Color.White);
+                    break;
+            }
 
             spriteBatch.DrawString(segoe, mouseCoordinate.X + ":" + mouseCoordinate.Y, new Vector2(0, 0), Color.White);
             gameMethod.Draw(spriteBatch, gameGrid, orbUnit, cubeUnit, spriteSize, gameGridDisplacing, gridSize);

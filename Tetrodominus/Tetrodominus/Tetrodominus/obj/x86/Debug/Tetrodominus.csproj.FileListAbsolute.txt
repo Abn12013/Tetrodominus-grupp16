@@ -46,3 +46,13 @@ F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\De
 F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
 F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\Tetrodominus.exe
 F:\Github\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\Tetrodominus.pdb
+C:\Users\Anttichama\Desktop\New tetro\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\bin\x86\Debug\Content\GameGridUnit.xnb
+C:\Users\Anttichama\Desktop\New tetro\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\bin\x86\Debug\Content\Orb.xnb
+C:\Users\Anttichama\Desktop\New tetro\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\bin\x86\Debug\Content\Cube.xnb
+C:\Users\Anttichama\Desktop\New tetro\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\bin\x86\Debug\Content\segoe.xnb
+C:\Users\Anttichama\Desktop\New tetro\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\bin\x86\Debug\Tetrodominus.exe
+C:\Users\Anttichama\Desktop\New tetro\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\bin\x86\Debug\Tetrodominus.pdb
+C:\Users\Anttichama\Desktop\New tetro\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Anttichama\Desktop\New tetro\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\Anttichama\Desktop\New tetro\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\Tetrodominus.exe
+C:\Users\Anttichama\Desktop\New tetro\Tetrodominus-grupp16\Tetrodominus\Tetrodominus\Tetrodominus\obj\x86\Debug\Tetrodominus.pdb

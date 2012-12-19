@@ -16,6 +16,8 @@ namespace Tetrodominus
     {
         public Vector2 position;
         public bool follow;
+        public bool free = true;
+        public int step = 4;
 
         public Unit()
         {
@@ -30,25 +32,29 @@ namespace Tetrodominus
 
         public void Behavior(Vector2 mouseCoordinate, ref bool[,] isOccupied)
         {
-            if (mouseCoordinate.X < position.X && isOccupied[(int)(position.X)-1, (int)position.Y] == false)
+            if (mouseCoordinate.X < position.X && isOccupied[(int)(position.X)-1, (int)position.Y] == false && step > 0)
             {
                 isOccupied[(int)position.X, (int)position.Y] = false;
                 position.X--;
+                step--;
             }
-            else if (mouseCoordinate.X > position.X && isOccupied[(int)(position.X) + 1, (int)position.Y] == false)
+            else if (mouseCoordinate.X > position.X && isOccupied[(int)(position.X) + 1, (int)position.Y] == false && step > 0)
             {
                 isOccupied[(int)position.X, (int)position.Y] = false;
                 position.X++;
+                step--;
             }
-            else if (mouseCoordinate.Y < position.Y && isOccupied[(int)position.X, (int)(position.Y)-1] == false)
+            else if (mouseCoordinate.Y < position.Y && isOccupied[(int)position.X, (int)(position.Y) - 1] == false && step > 0)
             {
                 isOccupied[(int)position.X, (int)position.Y] = false;
                 position.Y--;
+                step--;
             }
-            else if (mouseCoordinate.Y > position.Y && isOccupied[(int)position.X, (int)(position.Y)+1] == false)
+            else if (mouseCoordinate.Y > position.Y && isOccupied[(int)position.X, (int)(position.Y) + 1] == false && step > 0)
             {
                 isOccupied[(int)position.X, (int)position.Y] = false;
                 position.Y++;
+                step--;
             }
             isOccupied[(int)position.X, (int)position.Y] = true;
         }

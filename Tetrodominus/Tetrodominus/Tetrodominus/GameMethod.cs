@@ -19,6 +19,8 @@ namespace Tetrodominus
         private Texture2D gameGridTexture;
         int animationTimer;
         int frame;
+        public bool orbWin = false;
+        public bool cubeWin = false;
 
         public GameMethod()
         {
@@ -73,7 +75,7 @@ namespace Tetrodominus
             }
         }
 
-        public void CreateUnits(List<Unit> orbs, List<Unit> cubes, ref GameGrid gameGrid)
+        public void CreateOrbs(List<Unit> orbs, ref GameGrid gameGrid)
         {
             if (!gameGrid.isOccupied[5, 5])
             {
@@ -95,6 +97,10 @@ namespace Tetrodominus
                 orbs.Add(new Unit(new Vector2(5, 12)));
                 gameGrid.isOccupied[5, 12] = true;
             }
+        }
+
+        public void CreateCubes(List<Unit> cubes, ref GameGrid gameGrid)
+        {
             if (!gameGrid.isOccupied[34, 5])
             {
                 cubes.Add(new Unit(new Vector2(34, 5)));
@@ -114,6 +120,68 @@ namespace Tetrodominus
             {
                 cubes.Add(new Unit(new Vector2(34, 12)));
                 gameGrid.isOccupied[34, 12] = true;
+            }
+        }
+
+        public void RemoveLine(ref GameGrid gameGrid, ref List<Unit> orbUnit, ref List<Unit> cubeUnit)
+        {
+            int count = 0;
+            int column = 0;
+            for (int x = 4; x <= 36; x++)
+            {
+                count = 0;
+                for (int y = 4; y <= 14; y++)
+                {
+                    if (gameGrid.isOccupied[x, y] == true)
+                    {
+                        count++;
+                        if (count == 10)
+                        {
+                            if (x == 4)
+                                cubeWin = true;
+                            if (x == 35)
+                                orbWin = true;
+                            column = x;
+                            int counter = 0;
+                            int unitCount = orbUnit.Count;
+                            int tempY = 0;
+                            int tempX = 0;
+                            for (int i = 0; counter < unitCount; i++)
+                            {
+                                counter++;
+                                if (orbUnit.ElementAt(i).position.X == column)
+                                {
+                                    tempY = (int)orbUnit.ElementAt(i).position.Y;
+                                    tempX = (int)orbUnit.ElementAt(i).position.X;
+                                    if (gameGrid.isOccupied[tempX, tempY] == true)
+                                    {
+                                        gameGrid.isOccupied[tempX, tempY] = false;
+                                    }
+                                    orbUnit.RemoveAt(i);
+                                    i--;
+                                }
+                                
+                            }
+                            counter = 0;
+                            unitCount = cubeUnit.Count;
+                            for (int i = 0; counter < unitCount; i++)
+                            {
+                                counter++;
+                                if (cubeUnit.ElementAt(i).position.X == column)
+                                {
+                                    tempY = (int)cubeUnit.ElementAt(i).position.Y;
+                                    tempX = (int)cubeUnit.ElementAt(i).position.X;
+                                    if (gameGrid.isOccupied[tempX, tempY] == true)
+                                    {
+                                        gameGrid.isOccupied[tempX, tempY] = false;
+                                    }
+                                    cubeUnit.RemoveAt(i);
+                                    i--;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
